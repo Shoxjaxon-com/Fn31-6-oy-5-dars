@@ -1,42 +1,42 @@
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import axios from 'axios'
-import './App.css'
-function App() {
-  const[posts,setPosts] = useState([])
-  useEffect(()=>{
-    axios.get('https://jsonplaceholder.typicode.com/posts/')
-    .then(respose =>{
-      if(respose.status ==200){
-        setPosts(respose.data)
-      }
-    })
-    .catch(error =>{
-      console.log(13, error);
+// import React from 'react'
+// import { useState } from 'react'
+// import { useEffect } from 'react'
+// import axios from 'axios'
+// import './App.css'
+// function App() {
+//   const[posts,setPosts] = useState([])
+//   useEffect(()=>{
+//     axios.get('https://jsonplaceholder.typicode.com/posts/')
+//     .then(respose =>{
+//       if(respose.status ==200){
+//         setPosts(respose.data)
+//       }
+//     })
+//     .catch(error =>{
+//       console.log(13, error);
       
-    })
-  },[])
-  return (
-    <div>
-      {
-        posts.length>0 && posts.map((posts,index)=>{
-          return(
-            <div key={index} className='api-1'>
-               <div className="api1__wrapper">
-               <h2 className='id'>{posts.id}</h2>
-                <h3 className='title'>{posts.title}</h3>
-                <p className='body'>{posts.body}</p>
-               </div>
-            </div>
-          )
-        })
-      }
-    </div>
-  )
-}
+//     })
+//   },[])
+//   return (
+//     <div>
+//       {
+//         posts.length>0 && posts.map((posts,index)=>{
+//           return(
+//             <div key={index} className='api-1'>
+//                <div className="api1__wrapper">
+//                <h2 className='id'>{posts.id}</h2>
+//                 <h3 className='title'>{posts.title}</h3>
+//                 <p className='body'>{posts.body}</p>
+//                </div>
+//             </div>
+//           )
+//         })
+//       }
+//     </div>
+//   )
+// }
 
-export default App
+// export default App
 
 // 4-api
 // import axios from 'axios'
@@ -246,3 +246,119 @@ export default App
 // }
 
 // export default ContactForm;
+
+
+
+import React, { useState } from "react";
+import './App.css'
+
+const SignUpForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [passwordError, setPasswordError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Parol tekshiruvi
+    if (name === "password") {
+      if (value.length < 8) {
+        setPasswordError("Parol kamida 8 ta belgidan iborat bo'lishi kerak.");
+      } else {
+        setPasswordError("");
+      }
+    }
+  };
+
+  const isFormValid =
+    formData.name &&
+    formData.email &&
+    formData.phone &&
+    formData.password.length >= 8;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Ro'yxatdan o'tdingiz!");
+  };
+
+  return (
+    <div className="max-w-md mx-auto p-4 border rounded shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Ro'yxatdan o'tish</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Ism:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            placeholder="Ismingizni kiriting"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            placeholder="Emailingizni kiriting"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Telefon raqami:</label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            placeholder="Telefon raqamingizni kiriting"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Parol:</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            placeholder="Parolingizni kiriting"
+            required
+          />
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={!isFormValid}
+          className={`w-full p-2 rounded ${
+            isFormValid
+              ? "bg-blue-500 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          Ro'yxatdan o'tish
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default SignUpForm;
